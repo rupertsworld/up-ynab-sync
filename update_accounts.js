@@ -49,7 +49,8 @@ async function add_ynab_transactions(up_transactions) {
       "account_id": ynab_account_id,
       "date": u.attributes.settledAt.split('T')[0],
       "amount": u.attributes.amount.valueInBaseUnits * 10,
-      "payee_name": u.attributes.description
+      "payee_name": u.attributes.description,
+      "cleared": "cleared",
     }
   })
 
