@@ -22,35 +22,28 @@ const post_headers = {
   'Content-Type': 'application/json',
 }
 
-/* Getting info */
-
-async function get_ynab_accounts() {
-  const res = await fetch(`${ynab_url}/budgets/${budget_id}/accounts`, {
-    headers: ynab_headers
-  })
-  const json = await res.json()
-  console.log(json)
-}
-
-/* Data functions */
-
 async function get_up_transactions() {
+  console.log("Getting UP accounts...")
   const res = await fetch(`${up_url}/accounts/${up_account_id}/transactions`, {
     headers: up_headers
   })
   const json = await res.json()
+  console.log("Got Up accounts.")
   return json.data
 }
 
 async function get_ynab_transactions() {
+  console.log("Getting YNAB transactions...")
   const res = await fetch(`${ynab_url}/budgets/${budget_id}/transactions`, {
     headers: ynab_headers
   })
   const json = await res.json()
+  console.log("Got YNAB transactions.")
   return json.data.transactions
 }
 
 async function add_ynab_transactions(up_transactions) {
+  console.log("Adding missing UP transactions to YNAB.")
   const ynab_transactions = up_transactions.map((u) => {
     return {
       "account_id": ynab_account_id,
@@ -72,9 +65,13 @@ async function add_ynab_transactions(up_transactions) {
     },
     body: JSON.stringify(body)
   })
+
+  console.log("Transactions transferred!")
 }
 
 async function run() {
+  console.log("Running sync...")
+
   const up_transactions = await get_up_transactions()
   const ynab_transactions = await get_ynab_transactions()
 
@@ -95,7 +92,14 @@ async function run() {
     }
   })
 
-  await add_ynab_transactions(missing_transactions)
+  if (missing_transactions.length) {
+    console.log(`${missing_transactions.length} transactions to sync.`)
+    await add_ynab_transactions(missing_transactions)
+  } else {
+    console.log("Transactions between UP & YNAB are up to date.")
+  }
+
+  console.log("Sync complete.")
 }
 
 run()
