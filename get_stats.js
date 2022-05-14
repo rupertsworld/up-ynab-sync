@@ -42,5 +42,5 @@ async function get_up_accounts() {
 }
 
 // get_ynab_budgets()
-get_ynab_accounts()
+// get_ynab_accounts()
 // get_up_accounts()
