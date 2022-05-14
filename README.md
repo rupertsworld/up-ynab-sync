@@ -14,10 +14,12 @@ You will need to set the following environment variables:
 - `YNAB_ACCOUNT_ID`: You can get this by running the `get_ynab_accounts()` function in `get_stats.js`
 - `BUDGET_ID`: You can get this by running the `get_ynab_budgets()` function ini `get_stats.js`
 
-## Improvements
+## To-Do
 
 - This doesn't yet understand transactions in YNAB that have been renamed, so may import duplicates if this is the case.
 - I haven't put any error handling in this yet, so it may fail with unclear error messages.
+- It would be great if this could import both cleared and uncleared transactions, and update any uncleared ones
+- No support for savers as yet
 
 ## Disclaimer
 
