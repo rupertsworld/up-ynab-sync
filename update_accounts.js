@@ -1,8 +1,10 @@
+import fetch from 'node-fetch'
+
 const up_key = process.env.UP_KEY
 const ynab_key = process.env.YNAB_KEY
 const up_account_id = process.env.UP_ACCOUNT_ID
 const budget_id = process.env.BUDGET_ID
-const ynab_account_id = process.env.YNAB_`ACCOUNT_ID`
+const ynab_account_id = process.env.YNAB_ACCOUNT_ID
 
 const up_url = "https://api.up.com.au/api/v1"
 const ynab_url = "https://api.youneedabudget.com/v1"
@@ -65,7 +67,7 @@ async function add_ynab_transactions(up_transactions) {
   const res = await fetch(`${ynab_url}/budgets/${budget_id}/transactions`, {
     method: 'POST',
     headers: {
-
+      ...post_headers,
       ...ynab_headers
     },
     body: JSON.stringify(body)
