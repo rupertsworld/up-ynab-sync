@@ -23,12 +23,12 @@ const post_headers = {
 }
 
 async function get_up_transactions() {
-  console.log("Getting UP accounts...")
+  console.log("Getting UP transactions...")
   const res = await fetch(`${up_url}/accounts/${up_account_id}/transactions`, {
     headers: up_headers
   })
   const json = await res.json()
-  console.log("Got Up accounts.")
+  console.log("Got Up transactions.")
   return json.data
 }
 
@@ -47,7 +47,7 @@ async function add_ynab_transactions(up_transactions) {
   const ynab_transactions = up_transactions.map((u) => {
     return {
       "account_id": ynab_account_id,
-      "date": u.attributes.settledAt.split('T')[0],
+      "date": u.attributes.createdAt.split('T')[0],
       "amount": u.attributes.amount.valueInBaseUnits * 10,
       "payee_name": u.attributes.description,
       "cleared": "cleared",
@@ -88,7 +88,8 @@ async function run() {
       }
     })
 
-    if (match == false && u.attributes.status == 'SETTLED') {
+    // if (match == false && u.attributes.status == 'SETTLED') {
+    if (match == false) {
       missing_transactions.push(u)
     }
   })
